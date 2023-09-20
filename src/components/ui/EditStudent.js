@@ -1,27 +1,28 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { editStd } from "../redux/slice";
-import { addStd } from "../redux/slice";
+// import { editStd } from "../redux/slice";
+// import { addStd } from "../redux/slice";
+import {editStd} from "../redux/slice/Slice";
 function EditStudent() {
-  const [info, setInfo] = useState({
-    name: "",
-    age: "",
-    course: "",
-    batch: "",
-  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const dataFromLoc = useLocation().state.index;
   const data = useSelector((state) => state.Stu_Data[dataFromLoc]);
-  console.log(data);
+  // console.log(data);
+  const [info, setInfo] = useState({
+    name: data.name,
+    age: data.age,
+    course: data.course,
+    batch: data.batch,
+  });
   const changeHandler = (e) => {
     console.log("changed");
     setInfo({ ...info, [e.target.name]: e.target.value });
   };
   const updateClickHandler = () => {
     console.log(info);
-    dispatch(editStd({ info, index }));
+    dispatch(editStd({ info, dataFromLoc }));
     navigate("/student");
   };
   return (
@@ -32,9 +33,10 @@ function EditStudent() {
           Name:
           <input
             onChange={changeHandler}
-            // value={data.name}
+            placeholder={data.name}
             id="name"
             type="text"
+            name="name"
           />
         </label>
         <label>
@@ -43,6 +45,8 @@ function EditStudent() {
             onChange={changeHandler}
             // value={data.age}
             id="name"
+            placeholder={data.age}
+            name="age"
             type="number"
           />
         </label>
@@ -52,7 +56,9 @@ function EditStudent() {
             onChange={changeHandler}
             // value={data.course}
             id="name"
+            name="course"
             type="text"
+            placeholder={data.course}
           />
         </label>
 
@@ -60,8 +66,10 @@ function EditStudent() {
           Batch:
           <input
             onChange={changeHandler}
+            placeholder={data.batch}
             // value={data.batch}
             id="name"
+            name="batch"
             type="text"
           />
         </label>
